@@ -1,44 +1,55 @@
-import {Link, usePage} from "@inertiajs/react";
-import { progress } from '@inertiajs/react'
+import { Link, usePage } from "@inertiajs/react";
 
-export default function Home({ posts }){
-    console.log(usePage());
-    console.log(posts);
-
-    const {flash} = usePage().props;
+export default function Home({ posts }) {
+    const { flash } = usePage().props;
 
     return (
-        <>
-            <h1>Hello</h1>
-            {flash.message && <div>{flash.message}</div>}
+        <div className="max-w-3xl mx-auto p-6">
+            <h1 className="text-2xl font-bold mb-4">Hello</h1>
+
+            {flash.message && (
+                <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">
+                    {flash.message}
+                </div>
+            )}
 
             {/*Тут нужно стилизовать и убрать next на последней странице*/}
-            <div>
-                {posts.data.map(post => (
-                    <div key={post.id}>
-                        <p>{post.body}</p>
+            <div className="space-y-4">
+                {posts.data.map((post) => (
+                    <div
+                        key={post.id}
+                        className="p-4 border rounded-lg shadow-sm hover:shadow-md transition"
+                    >
+                        <p className="mb-2">{post.body}</p>
 
                         {/* Можно использовать проще https://github.com/tighten/ziggy*/}
-                        <Link href={`posts/${post.id}`}>Read more...</Link>
-
+                        <Link
+                            href={`posts/${post.id}`}
+                            className="text-blue-600 hover:underline"
+                        >
+                            Read more...
+                        </Link>
                     </div>
                 ))}
             </div>
 
-            <div style={{ marginTop: "20px" }}>
+            <div className="flex gap-2 justify-center mt-6">
                 {posts.links.map((link, index) => (
                     <Link
                         key={index}
                         href={link.url || "#"}
                         dangerouslySetInnerHTML={{ __html: link.label }}
                         preserveScroll
-                        className={link.active ? "font-bold text-blue-600" : ""}
+                        className={`px-3 py-1 rounded ${
+                            link.active
+                                ? "bg-blue-600 text-white"
+                                : "text-blue-600 hover:bg-blue-100"
+                        }`}
                     />
                 ))}
             </div>
-        </>
-    )
+        </div>
+    );
+
+
 }
-
-
-
